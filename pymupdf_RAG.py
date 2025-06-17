@@ -12,7 +12,7 @@ from langchain.retrievers import ContextualCompressionRetriever
 from langchain.retrievers.document_compressors import LLMChainExtractor
 
 # === 1. PDF 처리 ===
-pdf_dir = pathlib.Path("identity_laws_")
+pdf_dir = pathlib.Path("../../books")
 md_dir = pathlib.Path("converted_md")
 md_dir.mkdir(exist_ok=True)
 
@@ -65,7 +65,7 @@ db.save_local("faiss_db")
 print("✅ Done. FAISS DB saved.")
 
 # === 4. 질의 확장 ===
-question = "개인정보가 유출되었을 때 얼마나 보상을 받을 수 있나요?"
+question = "수학의 원칙?"
 llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)
 
 query_prompt = PromptTemplate.from_template("""
