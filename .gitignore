@@ -18,4 +18,5 @@ venv/
 chroma*
 faiss_db*
 cache/
-/faiss_db
+/faiss_db/
+faiss_db

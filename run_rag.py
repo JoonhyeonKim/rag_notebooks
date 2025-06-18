@@ -69,12 +69,12 @@ else:
     db.save_local("faiss_db")
 
 # === 3. Retriever 설정 ===
-retriever = db.as_retriever(search_type="similarity_score_threshold", search_kwargs={"score_threshold": 0.3})
+retriever = db.as_retriever(search_type="similarity_score_threshold", search_kwargs={"score_threshold": 0.2})
 compressor = LLMChainExtractor.from_llm(ChatOpenAI(model="gpt-4o-mini", temperature=0))
 compression_retriever = ContextualCompressionRetriever(base_retriever=retriever, base_compressor=compressor)
 
 # === 4. 질문 입력 및 질의 확장 ===
-question = "개인정보가 유출되었을 때 받을 수 있는 최대 보상금은 얼마인가요?"
+question = "국내 주식으로 소득을 내서 세금을 내야할 때 몇 퍼센트지??"
 llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)
 
 query_prompt = PromptTemplate.from_template("""
