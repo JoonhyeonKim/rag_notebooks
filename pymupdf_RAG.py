@@ -10,6 +10,10 @@ from langchain_core.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain.retrievers import ContextualCompressionRetriever
 from langchain.retrievers.document_compressors import LLMChainExtractor
+from dotenv import load_dotenv
+
+load_dotenv()
+
 
 # === 1. PDF 처리 ===
 pdf_dir = pathlib.Path("../../books")
