@@ -16,7 +16,7 @@ load_dotenv()
 
 
 # === 1. PDF 처리 ===
-pdf_dir = pathlib.Path("../pydantic-with-langgraph-agent/identity_laws_/")
+pdf_dir = pathlib.Path("../../tax_laws_/")
 md_dir = pathlib.Path("converted_md")
 md_dir.mkdir(exist_ok=True)
 
@@ -69,7 +69,7 @@ db.save_local("faiss_db")
 print("✅ Done. FAISS DB saved.")
 
 # === 4. 질의 확장 ===
-question = "개인정보가 유출되었을때 받을 수 있는 최대 금액??"
+question = "소득세를 제 때 내지 못하면 얼마의 벌금이 부과되나?"
 llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)
 
 query_prompt = PromptTemplate.from_template("""

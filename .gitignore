@@ -16,5 +16,5 @@ venv/
 *.json
 
 chroma*
-
+faiss_db*
 cache/
