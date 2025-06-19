@@ -74,7 +74,7 @@ compressor = LLMChainExtractor.from_llm(ChatOpenAI(model="gpt-4o-mini", temperat
 compression_retriever = ContextualCompressionRetriever(base_retriever=retriever, base_compressor=compressor)
 
 # === 4. 질문 입력 및 질의 확장 ===
-question = "국내 주식으로 소득을 내서 세금을 내야할 때 몇 퍼센트지??"
+question = "대기업 주식으로 소득을 내서 세금을 내야할 때 몇 퍼센트지??"
 llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)
 
 query_prompt = PromptTemplate.from_template("""
