@@ -21,3 +21,4 @@ cache/
 /faiss_db/
 faiss_db/
 *.faiss
+index.faiss
