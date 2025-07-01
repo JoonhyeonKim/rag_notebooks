@@ -74,7 +74,7 @@ compressor = LLMChainExtractor.from_llm(ChatOpenAI(model="gpt-4o-mini", temperat
 compression_retriever = ContextualCompressionRetriever(base_retriever=retriever, base_compressor=compressor)
 
 # === 4. 질문 입력 및 질의 확장 ===
-question = "데이터를 받았다면 가장 먼저 해야할일??"
+question = "데이터가 정규분포를 따르지 않는 경우 어떻게 해야 하지??"
 llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)
 
 query_prompt = PromptTemplate.from_template("""
