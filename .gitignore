@@ -22,5 +22,7 @@ cache/
 faiss_db/
 *.faiss
 index.faiss
-
+faiss_db_for_ml/
 converted_md_for_ml/
+
+cache_for_ml/
