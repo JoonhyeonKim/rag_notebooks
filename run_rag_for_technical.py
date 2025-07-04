@@ -43,14 +43,62 @@ for md_file in sorted(md_dir.glob("*.md")):
     all_texts.extend(chunks)
 
 # === 2. FAISS 인덱스가 있다면 바로 로드 ===
+# if faiss_path.exists():
+#     print("📦 FAISS index found. Loading...")
+#     db = FAISS.load_local("faiss_db_for_ml", cached_embedder, allow_dangerous_deserialization=True)
+
+# else:
+#     print("🧠 No FAISS index. Checking embedding cache...")
+
+#     # 캐시 확인 후 임베딩 필요시 수행
+#     def batch_iter(items, batch_size):
+#         for i in range(0, len(items), batch_size):
+#             yield items[i:i + batch_size]
+
+#     cached_keys = list(cache_store.yield_keys(prefix=embedding_model.model))
+#     if not cached_keys:
+#         print("💾 No cached embeddings found. Embedding now...")
+#         for batch in batch_iter([doc.page_content for doc in all_texts], 50):
+#             _ = cached_embedder.embed_documents(batch)
+#     else:
+#         print(f"✅ {len(cached_keys)} cached embeddings found. Skipping embedding.")
+
+#     # FAISS 인덱스 생성
+#     print("🛠️ Creating FAISS index...")
+#     db = FAISS.from_documents(all_texts, cached_embedder)
+#     db.save_local("faiss_db_for_ml")
+
+
+# === 2. FAISS 인덱스가 있다면 바로 로드 ===
 if faiss_path.exists():
     print("📦 FAISS index found. Loading...")
     db = FAISS.load_local("faiss_db_for_ml", cached_embedder, allow_dangerous_deserialization=True)
 
-else:
-    print("🧠 No FAISS index. Checking embedding cache...")
+    # 기존에 인덱싱된 소스 목록 추출
+    existing_sources = set()
+    try:
+        # FAISS 내부 문서 일부를 통해 metadata source 목록 수집
+        for doc in db.similarity_search("dummy", k=100):
+            if "source" in doc.metadata:
+                existing_sources.add(doc.metadata["source"])
+    except Exception:
+        print("⚠️ Couldn't extract existing sources from index.")
 
-    # 캐시 확인 후 임베딩 필요시 수행
+    # 새로 추가할 문서만 추려내기
+    new_docs = [doc for doc in all_texts if doc.metadata.get("source") not in existing_sources]
+    print(f"🆕 Found {len(new_docs)} new documents to add.")
+
+    if new_docs:
+        db_new = FAISS.from_documents(new_docs, cached_embedder)
+        db.merge_from(db_new)
+        db.save_local("faiss_db_for_ml")
+        print("✅ FAISS updated with new documents.")
+    else:
+        print("✅ No new documents to add.")
+
+else:
+    print("🧠 No FAISS index. Creating from scratch...")
+
     def batch_iter(items, batch_size):
         for i in range(0, len(items), batch_size):
             yield items[i:i + batch_size]
@@ -63,10 +111,10 @@ else:
     else:
         print(f"✅ {len(cached_keys)} cached embeddings found. Skipping embedding.")
 
-    # FAISS 인덱스 생성
-    print("🛠️ Creating FAISS index...")
     db = FAISS.from_documents(all_texts, cached_embedder)
     db.save_local("faiss_db_for_ml")
+    print("✅ FAISS index created and saved.")
+
 
 # === 3. Retriever 설정 ===
 retriever = db.as_retriever(search_type="similarity_score_threshold", search_kwargs={"score_threshold": 0.2})
@@ -74,7 +122,7 @@ compressor = LLMChainExtractor.from_llm(ChatOpenAI(model="gpt-4o-mini", temperat
 compression_retriever = ContextualCompressionRetriever(base_retriever=retriever, base_compressor=compressor)
 
 # === 4. 질문 입력 및 질의 확장 ===
-question = "benford's law??"
+question = "PC 알고리즘에 대해 알려줘"
 llm = ChatOpenAI(model="gpt-4o", temperature=0)
 
 query_prompt = PromptTemplate.from_template("""
