@@ -74,8 +74,8 @@ compressor = LLMChainExtractor.from_llm(ChatOpenAI(model="gpt-4o-mini", temperat
 compression_retriever = ContextualCompressionRetriever(base_retriever=retriever, base_compressor=compressor)
 
 # === 4. 질문 입력 및 질의 확장 ===
-question = "데이터가 정규분포를 따르지 않는 경우 어떻게 해야 하지??"
-llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)
+question = "benford's law??"
+llm = ChatOpenAI(model="gpt-4o", temperature=0)
 
 query_prompt = PromptTemplate.from_template("""
 너는 질문을 더 잘 검색되도록 다양한 표현으로 바꾸는 시스템이야.
