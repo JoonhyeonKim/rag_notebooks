@@ -117,12 +117,12 @@ else:
 
 
 # === 3. Retriever 설정 ===
-retriever = db.as_retriever(search_type="similarity_score_threshold", search_kwargs={"score_threshold": 0.2})
+retriever = db.as_retriever(search_type="similarity_score_threshold", search_kwargs={"score_threshold": 0.1})
 compressor = LLMChainExtractor.from_llm(ChatOpenAI(model="gpt-4o-mini", temperature=0))
 compression_retriever = ContextualCompressionRetriever(base_retriever=retriever, base_compressor=compressor)
 
 # === 4. 질문 입력 및 질의 확장 ===
-question = "PC 알고리즘에 대해 알려줘"
+question = "osint tool에 대해 알려 줘"
 llm = ChatOpenAI(model="gpt-4o", temperature=0)
 
 query_prompt = PromptTemplate.from_template("""
