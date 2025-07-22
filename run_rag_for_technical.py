@@ -124,10 +124,10 @@ compression_retriever = ContextualCompressionRetriever(base_retriever=retriever,
 # === 4. 질문 입력 및 질의 확장 ===
 question = "osint tool에 대해 알려 줘"
 llm = ChatOpenAI(model="gpt-4o", temperature=0)
-
+## HyDE Prompt
 query_prompt = PromptTemplate.from_template("""
-너는 질문을 더 잘 검색되도록 다양한 표현으로 바꾸는 시스템이야.
-다음 질문을 3가지 다른 표현으로 바꾸어 줄바꿈으로 출력해줘.
+You act as a expert about the topic of user query.
+Now generate 3 different hypothetical answers for the question.
 
 질문: {question}
 """)
