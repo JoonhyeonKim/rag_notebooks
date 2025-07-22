@@ -122,7 +122,7 @@ compressor = LLMChainExtractor.from_llm(ChatOpenAI(model="gpt-4o-mini", temperat
 compression_retriever = ContextualCompressionRetriever(base_retriever=retriever, base_compressor=compressor)
 
 # === 4. 질문 입력 및 질의 확장 ===
-question = "double machine learning 기법을 수식으로 해서 알려줘."
+question = "conformal prediction을 python으로 실행하는 법."
 llm = ChatOpenAI(model="gpt-4o", temperature=0)
 ## HyDE Prompt
 query_prompt = PromptTemplate.from_template("""
