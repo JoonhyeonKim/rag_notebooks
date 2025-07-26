@@ -24,12 +24,12 @@ cached_embedder = CacheBackedEmbeddings.from_bytes_store(
 db = FAISS.load_local("faiss_db_for_religious", cached_embedder, allow_dangerous_deserialization=True)
 
 # === 1. Retriever 설정 ===
-retriever = db.as_retriever(search_type="similarity_score_threshold", search_kwargs={"score_threshold": 0.5})
+retriever = db.as_retriever(search_type="similarity_score_threshold", search_kwargs={"score_threshold": 0.4})
 compressor = LLMChainExtractor.from_llm(ChatOpenAI(model="gpt-4o-mini", temperature=0))
 compression_retriever = ContextualCompressionRetriever(base_retriever=retriever, base_compressor=compressor)
 
 # === 2. 질문 입력 및 질의 확장 ===
-question = "피스티스 소피아의 전체 내용을 요약해줘."
+question = "초기 불교와 아시아 불교의 차이가 뭐야."
 llm = ChatOpenAI(model="gpt-4o", temperature=0)
 ## HyDE Prompt
 query_prompt = PromptTemplate.from_template("""
