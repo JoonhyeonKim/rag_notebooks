@@ -29,7 +29,7 @@ compressor = LLMChainExtractor.from_llm(ChatOpenAI(model="gpt-4o-mini", temperat
 compression_retriever = ContextualCompressionRetriever(base_retriever=retriever, base_compressor=compressor)
 
 # === 2. 질문 입력 및 질의 확장 ===
-question = "아즈텍의 신앙에 대해 알려줘."
+question = "피타고라스는 왜 윤회를 믿었지."
 llm = ChatOpenAI(model="gpt-4o", temperature=0)
 ## HyDE Prompt
 query_prompt = PromptTemplate.from_template("""
