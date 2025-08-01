@@ -29,7 +29,7 @@ compressor = LLMChainExtractor.from_llm(ChatOpenAI(model="gpt-4o-mini", temperat
 compression_retriever = ContextualCompressionRetriever(base_retriever=retriever, base_compressor=compressor)
 
 # === 2. 질문 입력 및 질의 확장 ===
-question = "피타고라스는 왜 윤회를 믿었지."
+question = "유일신 신앙은 어디에서부터 시작했지?"
 llm = ChatOpenAI(model="gpt-4o", temperature=0)
 ## HyDE Prompt
 query_prompt = PromptTemplate.from_template("""
@@ -70,18 +70,15 @@ def format_query_docs(query_to_docs):
 formatted_context = format_query_docs(query_to_docs)
 
 rag_prompt = f"""
-다음은 원 질문에 대해 다양한 방식으로 재작성된 질의와 그에 대한 검색 결과 요약이다:
-
-## Context
-{formatted_context}
+Bob said, '{formatted_context}',
+{question} according to Bob?
 
 ## Instructions
 - 기존의 훈련 정보를 무시하고 이 정보만을 바탕으로 다음 질문에 정확하고 포괄적으로 답하라.
 - 비전문가가 이해할 수 있도록 용어를 쉽게 풀고 예시를 들어 설명하라.
 - 질문자와 같은 언어로 대답하라.
+- Bob에 대한 언급없이 물음에 대한 답만 하라.
 
-## Question
-Q: {question}
 """
 
 # === 5. 최종 응답 생성 ===
